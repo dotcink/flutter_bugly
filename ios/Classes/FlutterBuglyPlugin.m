@@ -16,11 +16,6 @@
       BOOL b = [self isBlankString:appId];
       if(!b){
           BuglyConfig * config = [[BuglyConfig alloc] init];
-          NSString *channel = call.arguments[@"channel"];
-          BOOL isChannelEmpty = [self isBlankString:channel];
-          if(!isChannelEmpty){
-            config.channel = channel;
-          }
           [Bugly startWithAppId:appId config:config];
           NSLog(@"Bugly appId: %@", appId);
 
@@ -53,26 +48,6 @@
       }
 
       [Bugly reportExceptionWithCategory:5 name:crash_message reason:@" " callStack:stackTraceArray extraInfo:data terminateApp:NO];
-      result(nil);
-  }else if([@"setUserId" isEqualToString:call.method]){
-      NSString *userId = call.arguments[@"userId"];
-      if (![self isBlankString:userId]) {
-          [Bugly setUserIdentifier:userId];
-      }
-      result(nil);
-  }else if([@"setUserTag" isEqualToString:call.method]){
-      NSNumber *userTag = call.arguments[@"userTag"];
-      if (userTag!=nil) {
-          NSInteger anInteger = [userTag integerValue];
-          [Bugly setTag:anInteger];
-      }
-      result(nil);
-  }else if([@"putUserData" isEqualToString:call.method]){
-      NSString *key = call.arguments[@"key"];
-      NSString *value = call.arguments[@"value"];
-      if (![self isBlankString:key]&&![self isBlankString:value]){
-          [Bugly setUserValue:value forKey:key];
-      }
       result(nil);
   }else {
       result(FlutterMethodNotImplemented);
