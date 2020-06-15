@@ -5,7 +5,6 @@ import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
-import 'bean/init_result_info.dart';
 
 class FlutterBugly {
   FlutterBugly._();
@@ -14,7 +13,7 @@ class FlutterBugly {
       const MethodChannel('crazecoder/flutter_bugly');
 
   ///初始化
-  static Future<InitResultInfo> init({
+  static Future init({
     String androidAppId,
     String iOSAppId,
   }) async {
@@ -23,10 +22,7 @@ class FlutterBugly {
     Map<String, Object> map = {
       "appId": Platform.isAndroid ? androidAppId : iOSAppId,
     };
-    final String result = await _channel.invokeMethod('initBugly', map);
-    Map resultMap = json.decode(result);
-    var resultBean = InitResultInfo.fromJson(resultMap);
-    return resultBean;
+    await _channel.invokeMethod('initBugly', map);
   }
 
   ///异常上报
